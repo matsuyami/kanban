@@ -27,11 +27,11 @@ const Layout = ({ children, title='Kanban' }: Props) => {
             <h1 className={'heading-lg mr-2 text-black'}> Platform Launch </h1>
             <ChevronIcon />
           </div>
-          <div className={'flex flex-row items-center'}> 
-            <button className={'flex items-center justify-center w-12 h-8 bg-main-purple opacity-30 rounded-3xl mr-4'}>
+          <div className={'flex flex-row items-center gap-4'}> 
+            <button className={'flex items-center justify-center w-12 h-8 bg-main-purple opacity-30 rounded-3xl'}>
               <AddIcon className={'w-3 w-3'}/>
             </button>  
-            <Ellipsis/>
+            <Ellipsis className={'scale-[0.8]'}/>
           </div>
         </div>
       </header>
