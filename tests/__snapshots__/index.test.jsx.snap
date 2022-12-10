@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home renders a heading 1`] = `
+<div>
+  <div>
+    <header>
+      <nav>
+        <a
+          href="/"
+        >
+          Home
+        </a>
+         | 
+        <a
+          href="/about"
+        >
+          About
+        </a>
+         |
+         
+        <a
+          href="/users"
+        >
+          Users List
+        </a>
+         |
+         
+        <a
+          href="/api/users"
+        >
+          Users API
+        </a>
+      </nav>
+    </header>
+    <h1
+      class="text-3xl font-bold underline"
+    >
+      Hello Next.js
+    </h1>
+    <p>
+      <a
+        href="/about"
+      >
+        About
+      </a>
+    </p>
+    <footer>
+      <hr />
+      <span>
+        I'm here to stay (Footer)
+      </span>
+    </footer>
+  </div>
+</div>
+`;
