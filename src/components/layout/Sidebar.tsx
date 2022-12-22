@@ -5,8 +5,7 @@ import BoardIcon from '../../assets/images/icon-board.svg'
 
 export const Sidebar = () => {
   return (
-    <aside className={'flex flex-col h-screen px-6 md:border-solid md:border-r-2 md:border-light-lines dark:md:border-dark-lines \
-                       md:w-[16.75rem] bg-white dark:bg-dark-gray'}>
+    <aside className={'flex flex-col h-screen px-6 md:border-solid md:border-r-2 md:border-light-lines dark:md:border-dark-lines md:w-[16.75rem] bg-white dark:bg-dark-gray'}>
       <div className={'flex flex-col w-[inherit]'}>
         <h2 className={'heading-sm py-8 tracking-[2.4px] uppercase'}>All boards (4)</h2>
         <button className={'flex items-center pb-6 gap-3 heading-md'}>

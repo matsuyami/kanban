@@ -10,8 +10,7 @@ export const BoardItem = ({id, task, index, ...rest}: Item) => {
   return(
     <Draggable draggableId={id} index={index}>
       {provided => (
-        <div className={'w-64 min-h-[90px] pl-4 pt-5 bg-white \
-          dark:bg-dark-gray rounded-lg drop-shadow-md'}
+        <div className={'w-64 min-h-[90px] pl-4 pt-5 bg-white dark:bg-dark-gray rounded-lg drop-shadow-md'}
           ref={provided.innerRef} 
           {...provided.draggableProps} 
           {...provided.dragHandleProps}
