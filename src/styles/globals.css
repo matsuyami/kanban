@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700&display=swap');
+
+/* purgecss start ignore */
+@tailwind base;
+@tailwind components;
+/* purgecss end ignore */
+@tailwind utilities;
+
+@layer base{
+  :root {
+    --color-black: #000112;
+    --color-very-dark-gray: #20212C; 
+    --color-dark-gray: #2B2C37;
+    --color-medium-gray: #828FA3;
+    --color-light-gray: #F4F7FD;
+    --color-main-purple: #635FC7;
+    --color-main-purple-hover: #A8A4FF;
+    --color-dark-lines: #3E3F4E; 
+    --color-light-lines: #E4EBFA;
+    --color-red: #EA5555;
+    --color-red-hover: #FF9898;
+  }
+ 
+  html {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  body {
+    @apply bg-light-gray dark:bg-very-dark-gray text-medium-gray;
+  }
+
+}
+
+@layer components {
+  .heading-sm {
+    @apply text-heading-sm font-bold;
+  }
+
+  .heading-md {
+    @apply text-heading-md font-bold;
+  }
+
+  .heading-lg {
+    @apply text-heading-lg font-bold;
+  }
+
+  .heading-xl {
+    @apply text-heading-xl font-bold;
+  }
+}
