@@ -15,8 +15,8 @@
     --color-light-gray: #F4F7FD;
     --color-main-purple: #635FC7;
     --color-main-purple-hover: #A8A4FF;
-    --color-lines-dark: #3E3F4E; 
-    --color-lines-light: #E4EBFA;
+    --color-dark-lines: #3E3F4E; 
+    --color-light-lines: #E4EBFA;
     --color-red: #EA5555;
     --color-red-hover: #FF9898;
   }
@@ -28,6 +28,7 @@
   body {
     @apply bg-light-gray dark:bg-very-dark-gray text-medium-gray;
   }
+
 }
 
 @layer components {
@@ -46,5 +47,4 @@
   .heading-xl {
     @apply text-heading-xl font-bold;
   }
-
 }
