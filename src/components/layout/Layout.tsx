@@ -53,9 +53,9 @@ export const Layout = ({ children, title='Kanban' }: Props) => {
           </div>
         </div>
       </header>
-      <div className={'flex flex-row flex-grow'}>
+      <div className={'flex flex-row flex-grow h-[calc(100vh_-_80px)]'}>
         {isTabletSize && <Sidebar/> }
-        <main className={'overflow-y-auto w-full min-h-screen whitespace-nowrap'}>
+        <main className={'overflow-y-auto w-full whitespace-nowrap'}>
           { children }
         </main>
       </div>
