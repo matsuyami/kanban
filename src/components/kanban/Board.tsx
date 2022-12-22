@@ -93,7 +93,7 @@ export const Board = () => {
       onDragEnd={onDragEnd}
     > 
       { winReady && 
-      <div className={'flex gap-5 ml-4 mt-8'}>
+      <div className={'flex gap-5 h-full pl-4 pt-8 dark:bg-very-dark-gray'}>
         {columns.map((arr, index)=> (
             <BoardColumn key={index} data={arr.tasks} colId={arr.colId} />
           ))
