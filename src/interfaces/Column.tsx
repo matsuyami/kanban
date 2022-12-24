@@ -1,4 +1,3 @@
-import { useState, createContext } from 'react'
 import { DropResult } from 'react-beautiful-dnd'
 import { Task } from './Task'
 

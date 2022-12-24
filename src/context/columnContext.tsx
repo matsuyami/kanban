@@ -1,6 +1,6 @@
-import { createContext, useCallback, useState } from 'react'
+import { createContext, useState } from 'react'
 
-import { Column, ColumnContextType } from '../interfaces/Column'
+import { IColumn, ColumnContextType } from '../interfaces/Column'
 import { Task } from '../interfaces/Task'
 
 import { DropResult } from 'react-beautiful-dnd'
@@ -26,11 +26,19 @@ const initialData = [
   }
 ]
 
+const reorderColItems = (col: IColumn, startIndex: number, destinationIndex: number): Array<Task> => {
+  const result = Array.from(col.tasks)
+  const [removed] = result.splice(startIndex, 1)
+  result.splice(destinationIndex, 0, removed)
+
+  return result
+}
+
 export const ColumnContext = createContext<ColumnContextType | null>(null)
 
 export const ColumnProvider = ({ children }) => {
 
-  const [columns, setColumns] = useState<Array<Column>>(initialData)
+  const [columns, setColumns] = useState<Array<IColumn>>(initialData)
 
   const updateColumnOnDrop = (result: DropResult) => {
     const { source, destination } = result
@@ -47,7 +55,7 @@ export const ColumnProvider = ({ children }) => {
 
     // same column
     if (destination.droppableId === source.droppableId) {
-      const newColTasks = reorderColItems(sourceColumn as Column, source.index, destination.index)
+      const newColTasks = reorderColItems(sourceColumn as IColumn, source.index, destination.index)
       // now updated in new array                                                                                                                                                                                        
       sourceColumn.tasks = newColTasks
       setColumns(cols)
@@ -69,10 +77,3 @@ export const ColumnProvider = ({ children }) => {
   return <ColumnContext.Provider value={{ columns, updateColumnOnDrop }}>{children}</ColumnContext.Provider>
 }
 
-const reorderColItems = useCallback((col: Column, startIndex: number, destinationIndex: number): Array<Task> => {
-  const result = Array.from(col.tasks)
-  const [removed] = result.splice(startIndex, 1)
-  result.splice(destinationIndex, 0, removed)
-
-  return result
-}, [])
