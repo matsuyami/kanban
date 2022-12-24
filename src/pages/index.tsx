@@ -3,7 +3,7 @@ import { Board } from '../components/kanban/Board'
 
 const IndexPage = () => (
   <Layout title="Kanban">
-    <Board/>
+    <Board />
   </Layout>
 )
 

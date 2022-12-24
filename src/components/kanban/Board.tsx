@@ -8,18 +8,18 @@ export const Board = () => {
       name: 'Todo',
       colId: 'todo-1',
       tasks: [
-        {id: '1', title: 'Do Crazy Stuff'}, 
-        {id: '2', title: 'Build a warehouse'},
-        {id: '3', title: 'Eat Potatoes'}
+        { id: '1', title: 'Do Crazy Stuff' },
+        { id: '2', title: 'Build a warehouse' },
+        { id: '3', title: 'Eat Potatoes' }
       ],
     },
     {
       name: 'Todo 2',
       colId: 'todo-2',
       tasks: [
-        {id: '4', title: 'Fried Potatoes'}, 
-        {id: '5', title: 'Fried Tomatoes'},
-        {id: '6', title: 'Fried Corn'}
+        { id: '4', title: 'Fried Potatoes' },
+        { id: '5', title: 'Fried Tomatoes' },
+        { id: '6', title: 'Fried Corn' }
       ],
     }
   ]
@@ -35,10 +35,10 @@ export const Board = () => {
     colId: string,
     tasks: Array<Task>
   }
-  
+
   const [columns, setColumns] = useState(initialData)
 
-  const reorderColItems = useCallback((col: Column, startIndex: number, destinationIndex: number): Array<Task> => {                                          
+  const reorderColItems = useCallback((col: Column, startIndex: number, destinationIndex: number): Array<Task> => {
     const result = Array.from(col.tasks)
     const [removed] = result.splice(startIndex, 1)
     result.splice(destinationIndex, 0, removed)
@@ -48,20 +48,20 @@ export const Board = () => {
 
 
   const onDragEnd = useCallback((result: DropResult) => {
-    const {source, destination} = result
+    const { source, destination } = result
 
     // unknown area
-    if(!destination) return 
+    if (!destination) return
 
     // same spot
-    if(destination.droppableId === source.droppableId && 
-       destination.index === source.index) return
-    
+    if (destination.droppableId === source.droppableId &&
+      destination.index === source.index) return
+
     const cols = [...columns]
-    const sourceColumn = cols.find(col => source.droppableId === col.colId) 
+    const sourceColumn = cols.find(col => source.droppableId === col.colId)
 
     // same column
-    if(destination.droppableId === source.droppableId){
+    if (destination.droppableId === source.droppableId) {
       const newColTasks = reorderColItems(sourceColumn as Column, source.index, destination.index)
       // now updated in new array                                                                                                                                                                                        
       sourceColumn.tasks = newColTasks
@@ -89,16 +89,16 @@ export const Board = () => {
   }, [])
 
   return (
-    <DragDropContext 
+    <DragDropContext
       onDragEnd={onDragEnd}
-    > 
-      { winReady && 
-      <div className={'flex gap-5 h-full pl-4 pt-8 dark:bg-very-dark-gray'}>
-        {columns.map((arr, index)=> (
+    >
+      {winReady &&
+        <div className={'flex gap-5 h-full pl-4 pt-8 dark:bg-very-dark-gray'}>
+          {columns.map((arr, index) => (
             <BoardColumn key={index} data={arr.tasks} colId={arr.colId} />
           ))
-        }
-      </div>
+          }
+        </div>
       }
     </DragDropContext>
   )
