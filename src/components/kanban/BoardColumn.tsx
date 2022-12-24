@@ -1,14 +1,9 @@
-import { useState } from 'react'
 import { Droppable } from 'react-beautiful-dnd'
 import { BoardItem } from './BoardItem'
 
-export const BoardColumn = ({data, colId}) => {
-  interface Task {
-    id: string,
-    title: string,
-    index: number,
-  }
+import { Task } from '../../interfaces/Task'
 
+export const BoardColumn = ({ data, colId }) => {
   return (
     <Droppable droppableId={colId}>
       {provided => (
@@ -17,13 +12,13 @@ export const BoardColumn = ({data, colId}) => {
           {...provided.droppableProps}
           className={'flex flex-col gap-4 min-w-[256px]'}
         >
-        {data && data.map((task: Task, index: number) => (
-            <BoardItem key={task.id} id={task.id} index={index} task={task.title}/>
+          {data && data.map((task: Task, index: number) => (
+            <BoardItem key={task.id} id={task.id} index={index} title={task.title} />
           ))
-        }
+          }
           {provided.placeholder}
         </div>
-      )} 
+      )}
     </Droppable>
   )
 }

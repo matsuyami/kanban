@@ -15,11 +15,7 @@ export const Sidebar = () => {
   }, [theme])
 
   const toggleTheme = () => {
-    if(theme === 'light'){
-      setTheme('dark')
-    } else if(theme === 'dark'){
-      setTheme('light')
-    }
+    theme.match('light') ? setTheme('dark') : setTheme('light')
   }
 
   return (
@@ -28,11 +24,13 @@ export const Sidebar = () => {
       <div className={'flex flex-col px-2 w-[inherit]'}>
         <h2 className={'heading-sm py-8 tracking-[2.4px] uppercase'}>All boards (4)</h2>
         <button className={'flex items-center pb-6 gap-3 heading-md'}>
-          <BoardIcon/>
+          <BoardIcon />
           <span>Marketing Plan</span>
         </button>
-        <button className={'flex items-center pb-6 gap-3 heading-md'}>
-          <BoardIcon className={'[&_path]:fill-main-purple'}/>
+        <button className={'flex items-center pb-6 gap-3 heading-md'}
+          onClick={() => console.log('added board item')}
+        >
+          <BoardIcon className={'[&_path]:fill-main-purple'} />
           <span className={'text-main-purple'}> + Create New Board</span>
         </button>
       </div>
@@ -50,8 +48,8 @@ export const Sidebar = () => {
             </div>
           </button>
           <MoonIcon />
-          </div>
         </div>
+      </div>
     </aside>
   )
 }
