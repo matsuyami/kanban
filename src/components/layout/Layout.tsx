@@ -9,7 +9,6 @@ import Logo from '../../assets/images/logo-mobile.svg'
 import Head from 'next/head'
 
 import { Sidebar } from './Sidebar'
-import { BoardItem } from '../kanban/BoardItem'
 
 type Props = {
   children?: ReactNode

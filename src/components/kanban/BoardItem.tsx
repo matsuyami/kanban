@@ -1,12 +1,7 @@
 import { Draggable } from 'react-beautiful-dnd'
+import { Task } from '../../interfaces/Task'
 
-interface Item {
-  id: string,
-  task: string,
-  index: number,
-}
-
-export const BoardItem = ({ id, task, index, ...rest }: Item) => {
+export const BoardItem = ({ id, title, index }: Task) => {
   return (
     <Draggable draggableId={id} index={index}>
       {provided => (
@@ -19,7 +14,7 @@ export const BoardItem = ({ id, task, index, ...rest }: Item) => {
             role='button'
             onClick={() => console.log('hello, world!')}
           >
-            <h3 className={'heading-md text-black dark:text-white'}>{task}</h3>
+            <h3 className={'heading-md text-black dark:text-white'}>{title}</h3>
             <h4 className={'heading-sm mt-2 dark:medium-gray'}>0 of 2 subtasks</h4>
           </div>
         </div>

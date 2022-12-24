@@ -15,11 +15,7 @@ export const Sidebar = () => {
   }, [theme])
 
   const toggleTheme = () => {
-    if (theme === 'light') {
-      setTheme('dark')
-    } else if (theme === 'dark') {
-      setTheme('light')
-    }
+    theme.match('light') ? setTheme('dark') : setTheme('light')
   }
 
   return (
@@ -31,7 +27,9 @@ export const Sidebar = () => {
           <BoardIcon />
           <span>Marketing Plan</span>
         </button>
-        <button className={'flex items-center pb-6 gap-3 heading-md'}>
+        <button className={'flex items-center pb-6 gap-3 heading-md'}
+          onClick={() => console.log('added board item')}
+        >
           <BoardIcon className={'[&_path]:fill-main-purple'} />
           <span className={'text-main-purple'}> + Create New Board</span>
         </button>
