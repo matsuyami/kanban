@@ -1,6 +1,7 @@
 import { useRef, useContext } from 'react'
 import { useForm, useFieldArray } from 'react-hook-form'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
+import { v4 as uuidv4 } from 'uuid';
 
 import { BoardContextType } from '../../interfaces/Board'
 import { BoardContext } from '../../context/boardContext'
@@ -19,7 +20,7 @@ export const BoardModal = ({ showModal, setShowModal }) => {
     defaultValues: {
       title: '',
       columns: [{
-        name: '', colId: '', tasks: new Array<Task>()
+        name: '', colId: uuidv4(), tasks: new Array<Task>()
       }],
     }
   })
