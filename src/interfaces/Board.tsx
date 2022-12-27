@@ -8,6 +8,6 @@ export interface IBoard {
 export type BoardContextType = {
   boards: Array<IBoard> | []
   deleteBoard?: (name: string) => void
-  getBoardColumns: (board: IBoard) => void
+  getBoardColumns: (board: IBoard) => Array<IColumn>
   addBoard: (board: IBoard) => boolean
 }
