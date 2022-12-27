@@ -28,13 +28,13 @@ export const Layout = ({ children, title = 'Kanban' }: Props) => {
 
   const boardContext = useContext<BoardContextType>(BoardContext)
 
-  const changeBoard = (boardName: string) => {
+  const changeBoard = (title: string) => {
     const boards = [...boardContext.boards]
-    const currentBoard = boards.find(board => board.boardName === boardName)
+    const currentBoard = boards.find(board => board.title === title)
 
     if (currentBoard) {
-      setCurrentBoard(currentBoard.boardName)
-      console.log(currentBoard.boardName)
+      setCurrentBoard(currentBoard.title)
+      console.log(currentBoard.title)
     }
 
   }
