@@ -12,7 +12,7 @@ import { Board } from '../kanban/Board'
 import { Sidebar } from './Sidebar'
 
 
-import { BoardContextType } from '../../interfaces/Board'
+import { BoardContextType, IBoard } from '../../interfaces/Board'
 import { BoardContext } from '../../context/boardContext'
 
 type Props = {
@@ -24,17 +24,16 @@ export const Layout = ({ children, title = 'Kanban' }: Props) => {
   const { width } = useWindowSize()
   const isTabletSize = width >= 768
 
-  const [currentBoard, setCurrentBoard] = useState<string>('')
+  const [currentBoard, setCurrentBoard] = useState<IBoard>()
 
   const boardContext = useContext<BoardContextType>(BoardContext)
 
-  const changeBoard = (title: string) => {
+  const changeBoard = (currBoard: IBoard) => {
     const boards = [...boardContext.boards]
-    const currentBoard = boards.find(board => board.title === title)
+    const foundBoard = boards.find(board => board.title === currBoard.title)
 
-    if (currentBoard) {
-      setCurrentBoard(currentBoard.title)
-      console.log(currentBoard.title)
+    if (foundBoard.title) {
+      setCurrentBoard(foundBoard)
     }
 
   }
@@ -57,8 +56,8 @@ export const Layout = ({ children, title = 'Kanban' }: Props) => {
           </div>
           <div className={'flex flex-row grow py-5 justify-between'}>
             <div className={'flex flex-row gap-2 md:pl-4 items-center'}>
-              <h1 className={'heading-lg text-black dark:text-white'}> {currentBoard} </h1>
-              {currentBoard && <ChevronIcon />}
+              <h1 className={'heading-lg text-black dark:text-white'}> {currentBoard?.title} </h1>
+              {currentBoard?.title && <ChevronIcon />}
             </div>
             <div className={'flex flex-row items-center pr-5 gap-4'}>
               <button className={'flex flex-row items-center justify-center w-12 md:w-40 h-8 md:h-12 bg-main-purple opacity-30 rounded-3xl'}
@@ -76,7 +75,7 @@ export const Layout = ({ children, title = 'Kanban' }: Props) => {
         {isTabletSize && <Sidebar changeBoard={changeBoard} />}
         <main className={'flex overflow-y-auto w-full whitespace-nowrap dark:bg-very-dark-gray'}>
           {children}
-          <Board />
+          <Board currentBoard={currentBoard} />
         </main>
       </div>
       <footer>

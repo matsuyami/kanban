@@ -34,7 +34,7 @@ export const Sidebar = ({ changeBoard }) => {
         {boardContext.boards && boardContext.boards.map((board: IBoard, index: number) => (
           <button
             key={index}
-            onClick={() => changeBoard(board.title)}
+            onClick={() => changeBoard(board)}
             className={'flex items-center pb-6 gap-3 heading-md'}>
             <BoardIcon />
             <span>{board.title}</span>
