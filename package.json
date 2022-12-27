@@ -16,7 +16,8 @@
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.41.1",
-    "tailwindcss": "^3.2.4"
+    "tailwindcss": "^3.2.4",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^5.0.0",
