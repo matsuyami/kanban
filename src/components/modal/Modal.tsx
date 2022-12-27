@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useContext } from 'react'
+import { useRef, useContext } from 'react'
 import { useForm, useFieldArray } from 'react-hook-form'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
 
