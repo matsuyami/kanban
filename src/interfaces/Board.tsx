@@ -1,12 +1,13 @@
 import { IColumn } from './Column'
 
 export interface IBoard {
-  name: string,
+  title: string,
   columns: Array<IColumn> | []
 }
 
 export type BoardContextType = {
   boards: Array<IBoard> | []
-  addBoard: (name: string, columns: Array<IColumn>) => void
-  deleteBoard: (name: string) => void
+  deleteBoard?: (name: string) => void
+  getBoardColumns: (board: IBoard) => void
+  addBoard: (board: IBoard) => boolean
 }

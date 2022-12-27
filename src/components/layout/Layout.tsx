@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { useContext, useState, ReactNode } from 'react'
 import { useWindowSize } from '../../hooks/useWindowSize'
 import Ellipsis from '../../assets/images/icon-vertical-ellipsis.svg'
 import LightLogo from '../../assets/images/logo-light.svg'
@@ -8,7 +8,12 @@ import AddIcon from '../../assets/images/icon-add-task-mobile.svg'
 import Logo from '../../assets/images/logo-mobile.svg'
 import Head from 'next/head'
 
+import { Board } from '../kanban/Board'
 import { Sidebar } from './Sidebar'
+
+
+import { BoardContextType } from '../../interfaces/Board'
+import { BoardContext } from '../../context/boardContext'
 
 type Props = {
   children?: ReactNode
@@ -18,6 +23,21 @@ type Props = {
 export const Layout = ({ children, title = 'Kanban' }: Props) => {
   const { width } = useWindowSize()
   const isTabletSize = width >= 768
+
+  const [currentBoard, setCurrentBoard] = useState<string>('')
+
+  const boardContext = useContext<BoardContextType>(BoardContext)
+
+  const changeBoard = (boardName: string) => {
+    const boards = [...boardContext.boards]
+    const currentBoard = boards.find(board => board.boardName === boardName)
+
+    if (currentBoard) {
+      setCurrentBoard(currentBoard.boardName)
+      console.log(currentBoard.boardName)
+    }
+
+  }
 
   const addBoardItem = () => {
     console.log('board item added')
@@ -37,8 +57,8 @@ export const Layout = ({ children, title = 'Kanban' }: Props) => {
           </div>
           <div className={'flex flex-row grow py-5 justify-between'}>
             <div className={'flex flex-row gap-2 md:pl-4 items-center'}>
-              <h1 className={'heading-lg text-black dark:text-white'}> Platform Launch </h1>
-              <ChevronIcon />
+              <h1 className={'heading-lg text-black dark:text-white'}> {currentBoard} </h1>
+              {currentBoard && <ChevronIcon />}
             </div>
             <div className={'flex flex-row items-center pr-5 gap-4'}>
               <button className={'flex flex-row items-center justify-center w-12 md:w-40 h-8 md:h-12 bg-main-purple opacity-30 rounded-3xl'}
@@ -53,9 +73,10 @@ export const Layout = ({ children, title = 'Kanban' }: Props) => {
         </div>
       </header>
       <div className={'flex flex-row flex-grow h-[calc(100vh_-_80px)]'}>
-        {isTabletSize && <Sidebar />}
-        <main className={'overflow-y-auto w-full whitespace-nowrap'}>
+        {isTabletSize && <Sidebar changeBoard={changeBoard} />}
+        <main className={'flex overflow-y-auto w-full whitespace-nowrap dark:bg-very-dark-gray'}>
           {children}
+          <Board />
         </main>
       </div>
       <footer>
