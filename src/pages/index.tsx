@@ -1,15 +1,15 @@
-import { Board } from '../components/kanban/Board'
 import { Layout } from '../components/layout/Layout'
 import { ColumnProvider } from '../context/columnContext'
+import { BoardProvider } from '../context/boardContext'
 
 const IndexPage = () => {
 
   return (
-    <ColumnProvider>
-      <Layout title="Kanban" >
-        <Board />
-      </Layout >
-    </ColumnProvider>
+    <BoardProvider>
+      <ColumnProvider>
+        <Layout title="Kanban" />
+      </ColumnProvider>
+    </BoardProvider>
   )
 }
 

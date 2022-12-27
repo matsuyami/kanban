@@ -1,14 +1,22 @@
-import { useState, useEffect } from 'react'
+import { useContext, useState, useEffect } from 'react'
+import { IBoard, BoardContextType } from '../../interfaces/Board'
+import { BoardContext } from '../../context/boardContext'
+import { BoardModal } from '../modal/Modal'
+
 import BoardIcon from '../../assets/images/icon-board.svg'
 import SunIcon from '../../assets/images/icon-light-theme.svg'
 import MoonIcon from '../../assets/images/icon-dark-theme.svg'
 
 type Theme = 'light' | 'dark'
 
-export const Sidebar = () => {
+export const Sidebar = ({ changeBoard }) => {
 
   // TODO: set theme according to localStorage
   const [theme, setTheme] = useState<Theme>('light')
+
+  const [showModal, setShowModal] = useState<boolean>(false)
+
+  const boardContext = useContext<BoardContextType>(BoardContext)
 
   useEffect(() => {
     document.body.className = theme
@@ -23,12 +31,17 @@ export const Sidebar = () => {
         md:border-light-lines dark:md:border-dark-lines md:w-[16.75rem] bg-white dark:bg-dark-gray`}>
       <div className={'flex flex-col px-2 w-[inherit]'}>
         <h2 className={'heading-sm py-8 tracking-[2.4px] uppercase'}>All boards (4)</h2>
-        <button className={'flex items-center pb-6 gap-3 heading-md'}>
-          <BoardIcon />
-          <span>Marketing Plan</span>
-        </button>
+        {boardContext.boards && boardContext.boards.map((board: IBoard, index: number) => (
+          <button
+            key={index}
+            onClick={() => changeBoard(board.title)}
+            className={'flex items-center pb-6 gap-3 heading-md'}>
+            <BoardIcon />
+            <span>{board.title}</span>
+          </button>
+        ))}
         <button className={'flex items-center pb-6 gap-3 heading-md'}
-          onClick={() => console.log('added board item')}
+          onClick={() => setShowModal(true)}
         >
           <BoardIcon className={'[&_path]:fill-main-purple'} />
           <span className={'text-main-purple'}> + Create New Board</span>
@@ -50,6 +63,7 @@ export const Sidebar = () => {
           <MoonIcon />
         </div>
       </div>
+      {showModal && <BoardModal showModal={showModal} setShowModal={setShowModal} />}
     </aside>
   )
 }

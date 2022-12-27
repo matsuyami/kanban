@@ -8,17 +8,17 @@
 
 @layer base{
   :root {
-    --color-black: #000112;
-    --color-very-dark-gray: #20212C; 
-    --color-dark-gray: #2B2C37;
-    --color-medium-gray: #828FA3;
-    --color-light-gray: #F4F7FD;
-    --color-main-purple: #635FC7;
-    --color-main-purple-hover: #A8A4FF;
-    --color-dark-lines: #3E3F4E; 
-    --color-light-lines: #E4EBFA;
-    --color-red: #EA5555;
-    --color-red-hover: #FF9898;
+    --color-black: 0 1 18;
+    --color-very-dark-gray: 32 33 44; 
+    --color-dark-gray: 43 44 55;
+    --color-medium-gray: 130 143 163;
+    --color-light-gray: 244 247 253;
+    --color-main-purple: 88 95 199;
+    --color-main-purple-hover: 168 164 255;
+    --color-dark-lines: 62 63 78; 
+    --color-light-lines: 228 235 250;
+    --color-red: 234 85 85;
+    --color-red-hover: 255 151 152;
   }
  
   html {

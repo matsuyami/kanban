@@ -74,6 +74,14 @@ export const ColumnProvider = ({ children }) => {
     }
   }
 
-  return <ColumnContext.Provider value={{ columns, updateColumnOnDrop }}>{children}</ColumnContext.Provider>
+
+  const addColumn = (column: IColumn) => {
+    const col = [...columns]
+    col.push(column)
+    setColumns(col)
+  }
+
+
+  return <ColumnContext.Provider value={{ columns, addColumn, updateColumnOnDrop }}>{children}</ColumnContext.Provider>
 }
 

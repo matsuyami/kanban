@@ -8,17 +8,17 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        black: 'var(--color-black)',
-        'very-dark-gray': 'var(--color-very-dark-gray)',
-        'dark-gray': 'var(--color-dark-gray)',
-        'medium-gray': 'var(--color-medium-gray)',
-        'light-gray': 'var(--color-light-gray)',
-        'dark-lines': 'var(--color-dark-lines)',
-        'light-lines': 'var(--color-light-lines)',
-        'main-purple': 'var(--color-main-purple)',
-        'main-purple-hover': 'var(--color-main-purple-hover)',
-        red: 'var(--color-red)',
-        'red-hover': 'var(--color-red-hover)'
+        black: 'rgb(var(--color-black) / <alpha-value>)',
+        'very-dark-gray': 'rgb(var(--color-very-dark-gray)/ <alpha-value>)',
+        'dark-gray': 'rgb(var(--color-dark-gray)/ <alpha-value>)',
+        'medium-gray': 'rgb(var(--color-medium-gray)/ <alpha-value>)',
+        'light-gray': 'rgb(var(--color-light-gray)/ <alpha-value>)',
+        'dark-lines': 'rgb(var(--color-dark-lines)/ <alpha-value>)',
+        'light-lines': 'rgb(var(--color-light-lines)/ <alpha-value>)',
+        'main-purple': 'rgb(var(--color-main-purple)/ <alpha-value>)',
+        'main-purple-hover': 'rgb(var(--color-main-purple-hover)/ <alpha-value>)',
+        red: 'rgb(var(--color-red)/ <alpha-value>)',
+        'red-hover': 'rgb(var(--color-red-hover)/ <alpha-value>)'
       },
     },
     fontSize: {
