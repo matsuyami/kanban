@@ -1,3 +1,4 @@
+import { DropResult } from 'react-beautiful-dnd'
 import { IColumn } from './Column'
 
 export interface IBoard {
@@ -7,7 +8,12 @@ export interface IBoard {
 
 export type BoardContextType = {
   boards: Array<IBoard> | []
-  deleteBoard?: (name: string) => void
+  currentBoard: IBoard
+  updateColumnOnDrop: (board: IBoard, result: DropResult) => void
   getBoardColumns: (board: IBoard) => Array<IColumn>
+  setCurrentBoard: (board: IBoard) => void
   addBoard: (board: IBoard) => boolean
+  editBoard: (board: IBoard, prevTitle: string) => void
+  addColumn: (column: IColumn) => void
+  deleteBoard?: (name: string) => void
 }

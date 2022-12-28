@@ -13,4 +13,3 @@ export type ColumnContextType = {
   deleteColumn?: (column: IColumn) => void
   updateColumnOnDrop: (result: DropResult) => void
 }
-
