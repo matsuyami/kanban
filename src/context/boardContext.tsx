@@ -1,10 +1,25 @@
-import { useState, createContext } from 'react'
+import { useEffect, useState, createContext } from 'react'
+import { Task } from '../interfaces/Task'
+import { IColumn } from '../interfaces/Column'
 import { IBoard, BoardContextType } from '../interfaces/Board'
+import { DropResult } from 'react-beautiful-dnd'
+
+const reorderColItems = (col: IColumn, startIndex: number, destinationIndex: number): Array<Task> => {
+  const result = Array.from(col.tasks)
+  const [removed] = result.splice(startIndex, 1)
+  result.splice(destinationIndex, 0, removed)
+
+  return result
+}
 
 export const BoardContext = createContext<BoardContextType | null>(null)
 
 export const BoardProvider = ({ children }) => {
   const [boards, setBoards] = useState<Array<IBoard>>([])
+  const [columns, setColumns] = useState<Array<IColumn>>([])
+
+  const [currentBoard, setCurrentBoard] = useState<IBoard>()
+
 
   const addBoard = (board: IBoard) => {
     let isSuccess = true
@@ -20,9 +35,80 @@ export const BoardProvider = ({ children }) => {
     return isSuccess
   }
 
-  const getBoardColumns = (board: IBoard) => {
-    return board?.columns
+  const getBoardColumns = () => {
+    return currentBoard?.columns
   }
 
-  return <BoardContext.Provider value={{ boards, addBoard, getBoardColumns }}>{children}</BoardContext.Provider>
+  const updateColumnOnDrop = (board: IBoard, result: DropResult) => {
+    const { source, destination } = result
+
+    // unknown area
+    if (!destination) return
+
+    // same spot
+    if (destination.droppableId === source.droppableId &&
+      destination.index === source.index) return
+
+    const cols = [...board.columns]
+    const sourceColumn = cols.find(col => source.droppableId === col.colId)
+
+    // same column
+    if (destination.droppableId === source.droppableId) {
+      const newColTasks = reorderColItems(sourceColumn as IColumn, source.index, destination.index)
+      // now updated in new array                                                                                                                                                                                        
+      sourceColumn.tasks = newColTasks
+      setColumns(cols)
+
+    } else {  // different column
+      const destinationColumn = cols.find(col => destination.droppableId === col.colId)
+      const destinationTasks = [...destinationColumn.tasks]
+
+      const sourceTasks = [...sourceColumn.tasks]
+      const [removed] = sourceTasks.splice(source.index, 1)
+
+      destinationTasks.splice(destination.index, 0, removed)
+      destinationColumn.tasks = destinationTasks
+      sourceColumn.tasks = sourceTasks
+      setColumns(cols)
+    }
+  }
+
+
+  const addColumn = (column: IColumn) => {
+    const newBoard = { ...currentBoard }
+    const cols = [...newBoard.columns]
+    cols.push(column)
+    newBoard.columns = cols
+    setCurrentBoard(newBoard)
+
+    const boardsCopy = [...boards]
+    const replacedIndex = boards.findIndex(board => board.title === newBoard.title)
+    boardsCopy[replacedIndex].columns = cols
+    setBoards(boardsCopy)
+  }
+
+  const editBoard = (board: IBoard, prevTitle: string) => {
+    const foundIndex = boards?.findIndex(b => b.title === prevTitle)
+    if (foundIndex > -1) {
+      const boardCopy = [...boards]
+      boardCopy[foundIndex].title = board.title
+      boardCopy[foundIndex].columns = board.columns
+
+      setBoards(boardCopy)
+      setCurrentBoard(boardCopy[foundIndex])
+    }
+  }
+
+
+  return <BoardContext.Provider value={{
+    boards,
+    addBoard,
+    editBoard,
+    setCurrentBoard,
+    currentBoard,
+    updateColumnOnDrop,
+    addColumn,
+    getBoardColumns
+  }}>{children}</BoardContext.Provider>
 }
+

@@ -61,7 +61,9 @@ export const ColumnProvider = ({ children }) => {
       setColumns(cols)
 
     } else {  // different column
+      console.log(destination.droppableId)
       const destinationColumn = cols.find(col => destination.droppableId === col.colId)
+      console.log(destinationColumn)
       const destinationTasks = [...destinationColumn.tasks]
 
       const sourceTasks = [...sourceColumn.tasks]
@@ -79,6 +81,7 @@ export const ColumnProvider = ({ children }) => {
     const col = [...columns]
     col.push(column)
     setColumns(col)
+    console.log(columns)
   }
 
 
