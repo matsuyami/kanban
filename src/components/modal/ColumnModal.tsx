@@ -1,4 +1,4 @@
-import { useRef, useContext } from 'react'
+import { useRef, useContext, useState } from 'react'
 import { useForm, useFieldArray } from 'react-hook-form'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
 import { v4 as uuidv4 } from 'uuid';
@@ -8,53 +8,42 @@ import { BoardContext } from '../../context/boardContext'
 import { IBoard } from '../../interfaces/Board'
 import { Task } from '../../interfaces/Task'
 
-export const BoardModal = ({ showModal, setShowModal }) => {
+export const ColumnModal = ({ showModal, setShowModal }) => {
   const MAX_NUMBERS_OF_INPUTS = 6
 
-  const boards = useContext<BoardContextType>(BoardContext)
+  const boardContext = useContext<BoardContextType>(BoardContext)
   const formRef = useRef<HTMLFormElement>(null)
-
   useOutsideClick(formRef, () => setShowModal())
+
+  const prevBoardTitle = boardContext.currentBoard.title
+  const currentBoardColumns = boardContext.currentBoard.columns
 
   const { register, handleSubmit, control, formState: { errors } } = useForm<IBoard>({
     defaultValues: {
-      title: '',
-      columns: [{
-        name: 'Todo',
-        colId: uuidv4(),
-        tasks: [
-          { id: '1', title: 'Do Crazy Stuff' },
-          { id: '2', title: 'Build a warehouse' },
-          { id: '3', title: 'Eat Potatoes' }
-        ],
-      }],
+      title: prevBoardTitle,
+      columns: currentBoardColumns,
     }
   })
 
-  /*
-      columns: [{
-        name: '', colId: uuidv4(), tasks: new Array<Task>()
-      }],
-  */
   const { fields, append } = useFieldArray({
     name: 'columns',
     control,
   })
 
-  const handleBoardCreation = (data: IBoard) => {
+  const handleBoardUpdate = (data: IBoard) => {
     setShowModal(false)
-    boards.addBoard(data)
+    boardContext.editBoard(data, prevBoardTitle)
   }
 
 
   return (
-    <form onSubmit={handleSubmit((data) => handleBoardCreation(data))} aria-hidden='true'
+    <form onSubmit={handleSubmit((data) => handleBoardUpdate(data))} aria-hidden='true'
       ref={formRef}
       className={`flex-col p-6 absolute z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
         bg-white dark:bg-dark-gray w-full max-w-[22rem] md:max-w-[30rem] rounded-md pointer-events-auto
         ${showModal ? 'flex' : 'hidden'}
       `}>
-      <span className={'heading-lg text-black dark:text-white mb-6 '}>Add New Board</span>
+      <span className={'heading-lg text-black dark:text-white mb-6 '}>Add New Column</span>
       <label htmlFor='boardName' className={'heading-sm mb-2'}>Board Name</label>
       <div className={'relative'}>
         <input type='text'

@@ -1,4 +1,4 @@
-import React, { useContext, useState, ReactNode } from 'react'
+import React, { useEffect, useContext, useState, ReactNode } from 'react'
 import { useWindowSize } from '../../hooks/useWindowSize'
 import Ellipsis from '../../assets/images/icon-vertical-ellipsis.svg'
 import LightLogo from '../../assets/images/logo-light.svg'
@@ -24,8 +24,6 @@ export const Layout = ({ children, title = 'Kanban' }: Props) => {
   const { width } = useWindowSize()
   const isTabletSize = width >= 768
 
-  const [currentBoard, setCurrentBoard] = useState<IBoard>()
-
   const boardContext = useContext<BoardContextType>(BoardContext)
 
   const changeBoard = (currBoard: IBoard) => {
@@ -33,13 +31,8 @@ export const Layout = ({ children, title = 'Kanban' }: Props) => {
     const foundBoard = boards.find(board => board.title === currBoard.title)
 
     if (foundBoard.title) {
-      setCurrentBoard(foundBoard)
+      boardContext.setCurrentBoard(foundBoard)
     }
-
-  }
-
-  const addBoardItem = () => {
-    console.log('board item added')
   }
 
   return (
@@ -56,12 +49,13 @@ export const Layout = ({ children, title = 'Kanban' }: Props) => {
           </div>
           <div className={'flex flex-row grow py-5 justify-between'}>
             <div className={'flex flex-row gap-2 md:pl-4 items-center'}>
-              <h1 className={'heading-lg text-black dark:text-white'}> {currentBoard?.title} </h1>
-              {currentBoard?.title && <ChevronIcon />}
+              <h1 className={'heading-lg text-black dark:text-white'}> {boardContext.currentBoard?.title} </h1>
+              {boardContext.currentBoard?.title && <ChevronIcon />}
             </div>
             <div className={'flex flex-row items-center pr-5 gap-4'}>
-              <button className={'flex flex-row items-center justify-center w-12 md:w-40 h-8 md:h-12 bg-main-purple opacity-30 rounded-3xl'}
-                onClick={() => addBoardItem()}
+              <button className={`flex flex-row items-center justify-center w-12 md:w-40 h-8 md:h-12 bg-main-purple 
+                                ${boardContext.currentBoard ? '' : 'opacity-30'} rounded-3xl`}
+                onClick={() => console.log('clicked task button')}
               >
                 {!isTabletSize && <AddIcon className={'w-3 w-3'} />}
                 {isTabletSize && <span className={'text-white font-bold'}>+ Add New Task </span>}
@@ -75,7 +69,7 @@ export const Layout = ({ children, title = 'Kanban' }: Props) => {
         {isTabletSize && <Sidebar changeBoard={changeBoard} />}
         <main className={'flex overflow-y-auto w-full whitespace-nowrap dark:bg-very-dark-gray'}>
           {children}
-          <Board currentBoard={currentBoard} />
+          <Board />
         </main>
       </div>
       <footer>

@@ -10,12 +10,10 @@ import MoonIcon from '../../assets/images/icon-dark-theme.svg'
 type Theme = 'light' | 'dark'
 
 export const Sidebar = ({ changeBoard }) => {
-
   // TODO: set theme according to localStorage
   const [theme, setTheme] = useState<Theme>('light')
 
   const [showModal, setShowModal] = useState<boolean>(false)
-
   const boardContext = useContext<BoardContextType>(BoardContext)
 
   useEffect(() => {
@@ -30,7 +28,7 @@ export const Sidebar = ({ changeBoard }) => {
     <aside className={`flex flex-col justify-between h-[calc(100vh - 80px)] px-4 md:border-solid md:border-r-2 
         md:border-light-lines dark:md:border-dark-lines md:w-[16.75rem] bg-white dark:bg-dark-gray`}>
       <div className={'flex flex-col px-2 w-[inherit]'}>
-        <h2 className={'heading-sm py-8 tracking-[2.4px] uppercase'}>All boards (4)</h2>
+        <h2 className={'heading-sm py-8 tracking-[2.4px] uppercase'}>All boards {`(${boardContext.boards.length})`}</h2>
         {boardContext.boards && boardContext.boards.map((board: IBoard, index: number) => (
           <button
             key={index}

@@ -8,7 +8,7 @@ export const BoardColumn = ({ data, columnName, colId }) => {
     <Droppable droppableId={colId}>
       {provided => (
         <div className={'flex flex-col '}>
-          <span className={'text-center'}>{columnName}</span>
+          <span className={'text-center uppercase heading-md mb-2'}>{columnName}<span className={'ml-2'}>{`(${data.length})`}</span></span>
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
