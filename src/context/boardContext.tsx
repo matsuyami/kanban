@@ -30,7 +30,7 @@ export const BoardProvider = ({ children }) => {
     } else {
       const boardsCopy = [...boards]
       boardsCopy.push(board)
-      setBoards(boardsCopy)
+      setBoards([...boards, board])
     }
     return isSuccess
   }
@@ -90,12 +90,17 @@ export const BoardProvider = ({ children }) => {
   const editBoard = (board: IBoard, prevTitle: string) => {
     const foundIndex = boards?.findIndex(b => b.title === prevTitle)
     if (foundIndex > -1) {
-      const boardCopy = [...boards]
-      boardCopy[foundIndex].title = board.title
-      boardCopy[foundIndex].columns = board.columns
+      const boardCopy = { ...boards[foundIndex] }
+      boardCopy.title = board.title
+      boardCopy.columns = board.columns
 
-      setBoards(boardCopy)
-      setCurrentBoard(boardCopy[foundIndex])
+      setBoards(prevState => prevState.map((board, index) => {
+        if (index === foundIndex) {
+          return boardCopy
+        }
+        return board
+      }))
+      setCurrentBoard(boardCopy)
     }
   }
 
