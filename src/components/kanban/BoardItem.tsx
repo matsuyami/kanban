@@ -1,24 +1,27 @@
 import { Draggable } from 'react-beautiful-dnd'
-import { Task } from '../../interfaces/Task'
+import { TaskModal } from '../modal/TaskModal'
 
-export const BoardItem = ({ id, title, index }: Task) => {
+export const BoardItem = ({ index, showModal, setShowModal, task }) => {
   return (
-    <Draggable draggableId={id} index={index}>
-      {provided => (
-        <div className={'flex items-center w-64 min-h-[90px] bg-white dark:bg-dark-gray rounded-lg drop-shadow-md'}
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-        >
-          <div className={'flex flex-col w-full h-full justify-center pointer pl-4'}
-            role='button'
-            onClick={() => console.log('hello, world!')}
+    <>
+      <Draggable draggableId={task.id} index={index}>
+        {provided => (
+          <div className={'flex items-center w-64 min-h-[90px] bg-white dark:bg-dark-gray rounded-lg drop-shadow-md'}
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
           >
-            <h3 className={'heading-md text-black dark:text-white'}>{title}</h3>
-            <h4 className={'heading-sm mt-2 dark:medium-gray'}>0 of 2 subtasks</h4>
+            <div className={'flex flex-col w-full h-full justify-center pointer pl-4'}
+              role='button'
+              onClick={() => console.log('clicked task')}
+            >
+              <h3 className={'heading-md text-black dark:text-white'}>{task.title}</h3>
+              <h4 className={'heading-sm mt-2 dark:medium-gray'}>0 of {task.subtasks?.length} subtasks</h4>
+            </div>
           </div>
-        </div>
-      )}
-    </Draggable>
+        )}
+      </Draggable>
+      {showModal && <TaskModal showModal={showModal} setShowModal={setShowModal} />}
+    </>
   )
 }

@@ -1,9 +1,13 @@
+import { useState } from 'react'
 import { Droppable } from 'react-beautiful-dnd'
 import { BoardItem } from './BoardItem'
 
 import { Task } from '../../interfaces/Task'
 
+
 export const BoardColumn = ({ data, columnName, colId }) => {
+  const [showModal, setShowModal] = useState(false)
+
   return (
     <Droppable droppableId={colId}>
       {provided => (
@@ -16,7 +20,12 @@ export const BoardColumn = ({ data, columnName, colId }) => {
               ${data.length < 1 ? 'border-[1px] border-dashed border-medium-gray rounded-xl' : ''}`}
           >
             {data && data.map((task: Task, index: number) => (
-              <BoardItem key={task.id} id={task.id} index={index} title={task.title} />
+              <BoardItem
+                showModal={showModal}
+                setShowModal={setShowModal}
+                index={index}
+                task={task}
+              />
             ))
             }
             {provided.placeholder}

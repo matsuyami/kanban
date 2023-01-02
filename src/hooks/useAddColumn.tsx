@@ -6,10 +6,9 @@ export const useAddColumn = (board: IBoard, column: IColumn) => {
   const [columns, setColumns] = useState<Array<IColumn>>([])
 
   useEffect(() => {
-    const cols = [...board.columns]
-    cols.push(column)
+    const cols = [...board.columns, column]
     setColumns(cols)
-  }, columns)
+  }, [board.columns, columns, column])
 
   return columns
 }

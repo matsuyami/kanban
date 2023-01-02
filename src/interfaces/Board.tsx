@@ -1,5 +1,6 @@
 import { DropResult } from 'react-beautiful-dnd'
 import { IColumn } from './Column'
+import { Task } from './Task'
 
 export interface IBoard {
   title: string,
@@ -16,4 +17,5 @@ export type BoardContextType = {
   editBoard: (board: IBoard, prevTitle: string) => void
   addColumn: (column: IColumn) => void
   deleteBoard?: (name: string) => void
+  addTaskByColumn: (id: string, task: Task) => void
 }

@@ -1,5 +1,7 @@
 import React, { useEffect, useContext, useState, ReactNode } from 'react'
 import { useWindowSize } from '../../hooks/useWindowSize'
+import { TaskModal } from '../modal/TaskModal'
+
 import Ellipsis from '../../assets/images/icon-vertical-ellipsis.svg'
 import LightLogo from '../../assets/images/logo-light.svg'
 import DarkLogo from '../../assets/images/logo-dark.svg'
@@ -10,7 +12,6 @@ import Head from 'next/head'
 
 import { Board } from '../kanban/Board'
 import { Sidebar } from './Sidebar'
-
 
 import { BoardContextType, IBoard } from '../../interfaces/Board'
 import { BoardContext } from '../../context/boardContext'
@@ -25,6 +26,7 @@ export const Layout = ({ children, title = 'Kanban' }: Props) => {
   const isTabletSize = width >= 768
 
   const boardContext = useContext<BoardContextType>(BoardContext)
+  const [showModal, setShowModal] = useState<boolean>(false)
 
   const changeBoard = (currBoard: IBoard) => {
     const boards = [...boardContext.boards]
@@ -54,8 +56,9 @@ export const Layout = ({ children, title = 'Kanban' }: Props) => {
             </div>
             <div className={'flex flex-row items-center pr-5 gap-4'}>
               <button className={`flex flex-row items-center justify-center w-12 md:w-40 h-8 md:h-12 bg-main-purple 
-                                ${boardContext.currentBoard ? '' : 'opacity-30'} rounded-3xl`}
-                onClick={() => console.log('clicked task button')}
+                                ${boardContext.currentBoard ? '' : 'cursor-not-allowed opacity-30'} rounded-3xl`}
+                disabled={boardContext.currentBoard ? false : true}
+                onClick={() => setShowModal(true)}
               >
                 {!isTabletSize && <AddIcon className={'w-3 w-3'} />}
                 {isTabletSize && <span className={'text-white font-bold'}>+ Add New Task </span>}
@@ -64,6 +67,7 @@ export const Layout = ({ children, title = 'Kanban' }: Props) => {
             </div>
           </div>
         </div>
+        {showModal && <TaskModal showModal={showModal} setShowModal={setShowModal} />}
       </header>
       <div className={'flex flex-row flex-grow h-[calc(100vh_-_80px)]'}>
         {isTabletSize && <Sidebar changeBoard={changeBoard} />}

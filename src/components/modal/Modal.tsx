@@ -22,20 +22,11 @@ export const BoardModal = ({ showModal, setShowModal }) => {
       columns: [{
         name: 'Todo',
         colId: uuidv4(),
-        tasks: [
-          { id: '1', title: 'Do Crazy Stuff' },
-          { id: '2', title: 'Build a warehouse' },
-          { id: '3', title: 'Eat Potatoes' }
-        ],
+        tasks: [],
       }],
     }
   })
 
-  /*
-      columns: [{
-        name: '', colId: uuidv4(), tasks: new Array<Task>()
-      }],
-  */
   const { fields, append } = useFieldArray({
     name: 'columns',
     control,
