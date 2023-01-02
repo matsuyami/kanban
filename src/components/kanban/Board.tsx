@@ -14,7 +14,7 @@ export const Board = () => {
 
   const boardContext = useContext<BoardContextType>(BoardContext)
   const currentBoard = boardContext.currentBoard
-  const boardColumns = boardContext.getBoardColumns(currentBoard)
+  const boardColumns = boardContext.currentBoard?.columns
 
   const onDragEnd = useCallback((result: DropResult) => {
     const currBoard = { ...currentBoard }

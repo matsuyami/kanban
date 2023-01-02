@@ -30,7 +30,7 @@ export const BoardProvider = ({ children }) => {
     } else {
       const boardsCopy = [...boards]
       boardsCopy.push(board)
-      setBoards(boardsCopy)
+      setBoards([...boards, board])
     }
     return isSuccess
   }
@@ -90,15 +90,53 @@ export const BoardProvider = ({ children }) => {
   const editBoard = (board: IBoard, prevTitle: string) => {
     const foundIndex = boards?.findIndex(b => b.title === prevTitle)
     if (foundIndex > -1) {
-      const boardCopy = [...boards]
-      boardCopy[foundIndex].title = board.title
-      boardCopy[foundIndex].columns = board.columns
+      const boardCopy = { ...boards[foundIndex] }
+      boardCopy.title = board.title
+      boardCopy.columns = board.columns
 
-      setBoards(boardCopy)
-      setCurrentBoard(boardCopy[foundIndex])
+      setBoards(prevState => prevState.map((board, index) => {
+        if (index === foundIndex) {
+          return boardCopy
+        }
+        return board
+      }))
+      setCurrentBoard(boardCopy)
     }
   }
 
+  const addTaskByColumn = (id: string, task: Task) => {
+    const currentColumns = [...currentBoard.columns]
+    const foundIndex = currentColumns.findIndex(col => col.colId === id)
+    const foundBoardIndex = boards.findIndex(board => board.title === currentBoard.title)
+    const tasks = [...currentColumns[foundIndex].tasks]
+
+    const updateColumnTasks = currentColumns.map((col, index) => {
+      if (foundIndex === index) {
+        return {
+          ...col,
+          tasks: [...tasks, task]
+        }
+      }
+      return col
+    })
+
+    setColumns(updateColumnTasks)
+
+    const updatedBoards = boards.map((board, index) => {
+      if (foundBoardIndex === index) {
+        return {
+          ...board,
+          columns: updateColumnTasks
+        }
+      }
+      return board
+    })
+
+    setBoards(updatedBoards)
+
+    const current = updatedBoards[foundBoardIndex]
+    setCurrentBoard(current)
+  }
 
   return <BoardContext.Provider value={{
     boards,
@@ -108,6 +146,7 @@ export const BoardProvider = ({ children }) => {
     currentBoard,
     updateColumnOnDrop,
     addColumn,
+    addTaskByColumn,
     getBoardColumns
   }}>{children}</BoardContext.Provider>
 }
