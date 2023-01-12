@@ -67,9 +67,17 @@ export const TaskModal = ({ showModal, setShowModal, action = 'view', currentTas
       </div>
 
       <label htmlFor='description' className='heading-sm mb-2'>Description</label>
-      <textarea name='description' id='description' placeholder="e.g It's always good to take a break. This 15 minute breakwill recharge the batteries a little."
-        className='border-2 rounded border-light-lines dark:bg-dark-gray dark:border-dark-lines w-full text-[13px] placeholder:text-medium-gray font-medium pl-4 pt-2 h-[7rem] mb-6'>
-      </textarea>
+      <div className='relative'>
+        <textarea
+          name='description'
+          id='description'
+          placeholder="e.g It's always good to take a break. This 15 minute breakwill recharge the batteries a little."
+          className='border-2 rounded border-light-lines dark:bg-dark-gray dark:border-dark-lines w-full text-[13px] placeholder:text-medium-gray font-medium pl-4 pt-2 h-[7rem] mb-6'
+          {...register('description', { required: true })}
+        >
+        </textarea>
+        {errors?.description && <div className='absolute text-red bottom-0 right-0 px-4'><span>Description can&apos;t be empty</span></div>}
+      </div>
       <label htmlFor='subtasks' className={'heading-sm mb-2'}>Subtasks</label>
       {
         fields.map((field, index) => (
