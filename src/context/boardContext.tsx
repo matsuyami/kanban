@@ -1,4 +1,4 @@
-import { useEffect, useState, createContext } from 'react'
+import { useState, createContext } from 'react'
 import { Task } from '../interfaces/Task'
 import { IColumn } from '../interfaces/Column'
 import { IBoard, BoardContextType } from '../interfaces/Board'
@@ -19,7 +19,6 @@ export const BoardProvider = ({ children }) => {
   const [columns, setColumns] = useState<Array<IColumn>>([])
 
   const [currentBoard, setCurrentBoard] = useState<IBoard>()
-
 
   const addBoard = (board: IBoard) => {
     let isSuccess = true
@@ -138,6 +137,48 @@ export const BoardProvider = ({ children }) => {
     setCurrentBoard(current)
   }
 
+  const editTaskByColumn = (colId: String, task: Task) => {
+    const currentColumns = [...currentBoard.columns]
+    const foundIndex = currentColumns.findIndex(col => col.colId === colId)
+    const foundBoardIndex = boards.findIndex(board => board.title === currentBoard.title)
+    const tasks = [...currentColumns[foundIndex].tasks]
+    const foundTaskIndex = tasks.findIndex(item => item.id === task.id)
+
+    const updateTasks = tasks.map((currentTask, index) => {
+      if (foundTaskIndex === index) {
+        return task
+      }
+      return currentTask
+    })
+
+    const updateColumnTasks = currentColumns.map((col, index) => {
+      if (foundIndex === index) {
+        return {
+          ...col,
+          tasks: updateTasks
+        }
+      }
+      return col
+    })
+
+    setColumns(updateColumnTasks)
+
+    const updatedBoards = boards.map((board, index) => {
+      if (foundBoardIndex === index) {
+        return {
+          ...board,
+          columns: updateColumnTasks
+        }
+      }
+      return board
+    })
+
+    setBoards(updatedBoards)
+
+    const current = updatedBoards[foundBoardIndex]
+    setCurrentBoard(current)
+  }
+
   return <BoardContext.Provider value={{
     boards,
     addBoard,
@@ -147,6 +188,7 @@ export const BoardProvider = ({ children }) => {
     updateColumnOnDrop,
     addColumn,
     addTaskByColumn,
+    editTaskByColumn,
     getBoardColumns
   }}>{children}</BoardContext.Provider>
 }

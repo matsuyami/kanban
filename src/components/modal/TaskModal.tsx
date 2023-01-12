@@ -8,7 +8,7 @@ import { BoardContext } from '../../context/boardContext'
 import { Task as ITask } from '../../interfaces/Task'
 import { IColumn } from '../../interfaces/Column'
 
-export const TaskModal = ({ showModal, setShowModal }) => {
+export const TaskModal = ({ showModal, setShowModal, action = 'view', currentTask }) => {
   const MAX_NUMBERS_OF_INPUTS = 6
 
   const boardContext = useContext<BoardContextType>(BoardContext)
@@ -19,14 +19,18 @@ export const TaskModal = ({ showModal, setShowModal }) => {
   const currentBoardColumns = boardContext.currentBoard.columns
   const [defaultStatus] = currentBoardColumns
 
-  const { register, handleSubmit, control, formState: { errors } } = useForm<ITask>({
-    defaultValues: {
+  const defaultValues = action === 'view'
+    ? {
       status: defaultStatus.name || '',
       title: '',
       description: '',
       subtasks: [{ subtask: '' }],
       id: uuidv4(),
     }
+    : { ...currentTask }
+
+  const { register, handleSubmit, control, formState: { errors } } = useForm<ITask>({
+    defaultValues: defaultValues
   })
 
   const { fields, append } = useFieldArray({
@@ -34,14 +38,18 @@ export const TaskModal = ({ showModal, setShowModal }) => {
     control,
   })
 
-  const addNewTask = (data: ITask) => {
+  const updateTask = (data: ITask) => {
     const columnId = currentBoardColumns?.find(col => col.name === data.status)?.colId
-    boardContext.addTaskByColumn(columnId, data)
+    if (action === 'view') {
+      boardContext.addTaskByColumn(columnId, data)
+    } else {
+      boardContext.editTaskByColumn(columnId, data)
+    }
     setShowModal(false)
   }
 
   return (
-    <form onSubmit={handleSubmit((data) => addNewTask(data))} aria-hidden='true'
+    <form onSubmit={handleSubmit((data) => updateTask(data))} aria-hidden='true'
       ref={formRef}
       className={`flex-col p-6 absolute z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
         bg-white dark:bg-dark-gray w-full max-w-[22rem] md:max-w-[30rem] rounded-md pointer-events-auto

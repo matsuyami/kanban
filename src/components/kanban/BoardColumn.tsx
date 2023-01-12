@@ -8,8 +8,6 @@ import { Task } from '../../interfaces/Task'
 
 
 export const BoardColumn = ({ data, columnName, colId }) => {
-  const [showModal, setShowModal] = useState(false)
-
   return (
     <Droppable droppableId={colId}>
       {provided => (
@@ -24,8 +22,6 @@ export const BoardColumn = ({ data, columnName, colId }) => {
             {data && data.map((task: Task, index: number) => (
               <BoardItem
                 key={uuidv4()}
-                showModal={showModal}
-                setShowModal={setShowModal}
                 index={index}
                 task={task}
               />
