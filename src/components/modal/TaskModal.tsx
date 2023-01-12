@@ -8,7 +8,7 @@ import { BoardContext } from '../../context/boardContext'
 import { Task as ITask } from '../../interfaces/Task'
 import { IColumn } from '../../interfaces/Column'
 
-export const TaskModal = ({ showModal, setShowModal, action = 'view', currentTask }) => {
+export const TaskModal = ({ showModal, setShowModal, action = 'view', currentTask = {} }) => {
   const MAX_NUMBERS_OF_INPUTS = 6
 
   const boardContext = useContext<BoardContextType>(BoardContext)

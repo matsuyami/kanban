@@ -1,4 +1,4 @@
-import { useRef, useContext, useState } from 'react'
+import { useRef, useContext } from 'react'
 import { useForm, useFieldArray } from 'react-hook-form'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
 import { v4 as uuidv4 } from 'uuid';

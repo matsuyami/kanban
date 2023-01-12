@@ -63,12 +63,19 @@ export const BoardProvider = ({ children }) => {
       const destinationTasks = [...destinationColumn.tasks]
 
       const sourceTasks = [...sourceColumn.tasks]
+      const currentTask = {
+        ...sourceTasks[source.index],
+        status: destinationColumn.name
+      }
+
       const [removed] = sourceTasks.splice(source.index, 1)
 
       destinationTasks.splice(destination.index, 0, removed)
       destinationColumn.tasks = destinationTasks
       sourceColumn.tasks = sourceTasks
+
       setColumns(cols)
+      editTaskByColumn(destinationColumn.colId, currentTask)
     }
   }
 
