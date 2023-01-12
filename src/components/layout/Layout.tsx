@@ -45,33 +45,33 @@ export const Layout = ({ children, title = 'Kanban' }: Props) => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <header>
-        <div className={'flex flex-row items-center h-20 bg-white dark:bg-dark-gray'}>
-          <div className={'flex md:min-w-[16.75rem] px-4 md:border-solid md:border-r-2 md:border-light-lines dark:md:border-dark-lines items-center h-full'}>
+        <div className='flex flex-row items-center h-20 bg-white dark:bg-dark-gray'>
+          <div className='flex md:min-w-[16.75rem] px-4 md:border-solid md:border-r-2 md:border-light-lines dark:md:border-dark-lines items-center h-full'>
             <Logo />
           </div>
-          <div className={'flex flex-row grow py-5 justify-between'}>
-            <div className={'flex flex-row gap-2 md:pl-4 items-center'}>
-              <h1 className={'heading-lg text-black dark:text-white'}> {boardContext.currentBoard?.title} </h1>
+          <div className='flex flex-row grow py-5 justify-between'>
+            <div className='flex flex-row gap-2 md:pl-4 items-center'>
+              <h1 className='heading-lg text-black dark:text-white'> {boardContext.currentBoard?.title} </h1>
               {boardContext.currentBoard?.title && <ChevronIcon />}
             </div>
-            <div className={'flex flex-row items-center pr-5 gap-4'}>
+            <div className='flex flex-row items-center pr-5 gap-4'>
               <button className={`flex flex-row items-center justify-center w-12 md:w-40 h-8 md:h-12 bg-main-purple 
                                 ${boardContext.currentBoard ? '' : 'cursor-not-allowed opacity-30'} rounded-3xl`}
                 disabled={boardContext.currentBoard ? false : true}
                 onClick={() => setShowModal(true)}
               >
-                {!isTabletSize && <AddIcon className={'w-3 w-3'} />}
-                {isTabletSize && <span className={'text-white font-bold'}>+ Add New Task </span>}
+                {!isTabletSize && <AddIcon className='w-3 w-3' />}
+                {isTabletSize && <span className='text-white font-bold'>+ Add New Task </span>}
               </button>
-              <Ellipsis className={'scale-[0.8]'} />
+              <Ellipsis className='scale-[0.8]' />
             </div>
           </div>
         </div>
         {showModal && <TaskModal showModal={showModal} setShowModal={setShowModal} />}
       </header>
-      <div className={'flex flex-row flex-grow h-[calc(100vh_-_80px)]'}>
+      <div className='flex flex-row flex-grow h-[calc(100vh_-_80px)]'>
         {isTabletSize && <Sidebar changeBoard={changeBoard} />}
-        <main className={'flex overflow-y-auto w-full whitespace-nowrap dark:bg-very-dark-gray'}>
+        <main className='flex overflow-y-auto w-full whitespace-nowrap dark:bg-very-dark-gray'>
           {children}
           <Board />
         </main>

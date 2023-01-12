@@ -28,7 +28,7 @@ export const Board = () => {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       {isWindowReady &&
-        <div className={'flex gap-5 h-full pl-4 pt-8 dark:bg-very-dark-gray'}>
+        <div className='flex gap-5 h-full pl-4 pt-8 dark:bg-very-dark-gray'>
           {boardColumns &&
             boardColumns.map((arr: IColumn, index: number) => (
               <BoardColumn key={index} columnName={arr.name} data={arr.tasks} colId={arr.colId} />
@@ -41,7 +41,7 @@ export const Board = () => {
             bg-[linear-gradient(180deg,#E9EFFA_0%,_rgba(233,239,250,0.5))] `}
               onClick={() => setShowModal(true)}
             >
-              <span className={'heading-xl'}>+ New Column </span>
+              <span className='heading-xl'>+ New Column </span>
             </button>
           }
         </div>
