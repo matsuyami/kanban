@@ -1,4 +1,4 @@
-import { useEffect, useState, createContext } from 'react'
+import { useState, createContext } from 'react'
 import { Task } from '../interfaces/Task'
 import { IColumn } from '../interfaces/Column'
 import { IBoard, BoardContextType } from '../interfaces/Board'
@@ -19,7 +19,6 @@ export const BoardProvider = ({ children }) => {
   const [columns, setColumns] = useState<Array<IColumn>>([])
 
   const [currentBoard, setCurrentBoard] = useState<IBoard>()
-
 
   const addBoard = (board: IBoard) => {
     let isSuccess = true
@@ -61,15 +60,24 @@ export const BoardProvider = ({ children }) => {
 
     } else {  // different column
       const destinationColumn = cols.find(col => destination.droppableId === col.colId)
-      const destinationTasks = [...destinationColumn.tasks]
+      //const destinationTasks = [...destinationColumn.tasks]
 
       const sourceTasks = [...sourceColumn.tasks]
       const [removed] = sourceTasks.splice(source.index, 1)
 
+      /*
       destinationTasks.splice(destination.index, 0, removed)
       destinationColumn.tasks = destinationTasks
       sourceColumn.tasks = sourceTasks
+      */
+
+      const currentTask = {
+        ...removed,
+        status: destinationColumn.name
+      }
+
       setColumns(cols)
+      editTaskByColumn(destinationColumn.colId, sourceColumn.colId, currentTask)
     }
   }
 
@@ -138,6 +146,89 @@ export const BoardProvider = ({ children }) => {
     setCurrentBoard(current)
   }
 
+  const editTaskByColumn = (colId: string, prevColId: string, task: Task) => {
+    const foundBoardIndex = boards.findIndex(board => board.title === currentBoard.title)
+    const currentColumns = [...currentBoard.columns]
+
+    if (colId === prevColId) {
+      const column = { ...currentColumns.find(col => col.colId === colId) }
+      const columnIndex = currentColumns.findIndex(col => col.colId === colId)
+
+      // remove previous task
+      const taskIndex = [...column.tasks].findIndex(t => t.id === task.id)
+      // need to update task by current index
+      const newTasks = [...column.tasks].map((t, index) => {
+        if (index === taskIndex) {
+          return {
+            ...task
+          }
+        }
+        return t
+      })
+
+      const updatedColumns = currentColumns.map((col, index) => {
+        if (index === columnIndex) {
+          return {
+            ...col,
+            tasks: newTasks
+          }
+        }
+        return col
+      })
+
+      updateBoardColumns(foundBoardIndex, updatedColumns)
+      // end if
+    } else {
+      const prevColumn = { ...currentColumns.find(col => col.colId === prevColId) }
+      const prevColumnIndex = currentColumns.findIndex(col => col.colId === prevColId)
+
+      const newColumn = { ...currentColumns.find(col => col.colId === colId) }
+      const newColumnIndex = currentColumns.findIndex(col => col.colId === colId)
+
+      const prevTasks = [...prevColumn.tasks].filter(t => t.id !== task.id)
+      const newTasks = [...newColumn.tasks, task]
+
+      const updatedPrevColumns = updateColumnTasks(currentColumns, prevColumnIndex, prevTasks)
+
+      // update previous columns tasks
+      updateBoardColumns(foundBoardIndex, updatedPrevColumns)
+
+      const updatedCurrentColumns = updateColumnTasks(updatedPrevColumns, newColumnIndex, newTasks)
+
+      updateBoardColumns(foundBoardIndex, updatedCurrentColumns)
+      // end else
+    }
+  }
+
+  const updateColumnTasks = (columns: Array<IColumn>, columnIndex: number, tasks: Array<Task>) => {
+    return columns.map((col, index) => {
+      if (index === columnIndex) {
+        return {
+          ...col,
+          tasks: tasks
+        }
+      }
+      return col
+    })
+  }
+
+  const updateBoardColumns = (boardIndex: number, updatedColumns: Array<IColumn>) => {
+    const updatedBoards = boards.map((board, index) => {
+      if (boardIndex === index) {
+        return {
+          ...board,
+          columns: updatedColumns
+        }
+      }
+      return board
+    })
+
+    setBoards(updatedBoards)
+
+    const current = updatedBoards[boardIndex]
+    setCurrentBoard(current)
+  }
+
   return <BoardContext.Provider value={{
     boards,
     addBoard,
@@ -147,6 +238,7 @@ export const BoardProvider = ({ children }) => {
     updateColumnOnDrop,
     addColumn,
     addTaskByColumn,
+    editTaskByColumn,
     getBoardColumns
   }}>{children}</BoardContext.Provider>
 }

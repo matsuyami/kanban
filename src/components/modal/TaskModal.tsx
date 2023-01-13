@@ -8,7 +8,7 @@ import { BoardContext } from '../../context/boardContext'
 import { Task as ITask } from '../../interfaces/Task'
 import { IColumn } from '../../interfaces/Column'
 
-export const TaskModal = ({ showModal, setShowModal }) => {
+export const TaskModal = ({ showModal, setShowModal, action = 'view', currentTask = undefined }) => {
   const MAX_NUMBERS_OF_INPUTS = 6
 
   const boardContext = useContext<BoardContextType>(BoardContext)
@@ -19,14 +19,18 @@ export const TaskModal = ({ showModal, setShowModal }) => {
   const currentBoardColumns = boardContext.currentBoard.columns
   const [defaultStatus] = currentBoardColumns
 
-  const { register, handleSubmit, control, formState: { errors } } = useForm<ITask>({
-    defaultValues: {
+  const defaultValues = action === 'view'
+    ? {
       status: defaultStatus.name || '',
       title: '',
       description: '',
       subtasks: [{ subtask: '' }],
       id: uuidv4(),
     }
+    : { ...currentTask }
+
+  const { register, handleSubmit, control, formState: { errors } } = useForm<ITask>({
+    defaultValues: defaultValues
   })
 
   const { fields, append } = useFieldArray({
@@ -34,14 +38,20 @@ export const TaskModal = ({ showModal, setShowModal }) => {
     control,
   })
 
-  const addNewTask = (data: ITask) => {
+  const updateTask = (data: ITask) => {
     const columnId = currentBoardColumns?.find(col => col.name === data.status)?.colId
-    boardContext.addTaskByColumn(columnId, data)
+
+    if (action === 'view') {
+      boardContext.addTaskByColumn(columnId, data)
+    } else {
+      const prevColumnId = currentBoardColumns?.find(col => col.name === currentTask.status)?.colId
+      boardContext.editTaskByColumn(columnId, prevColumnId, data)
+    }
     setShowModal(false)
   }
 
   return (
-    <form onSubmit={handleSubmit((data) => addNewTask(data))} aria-hidden='true'
+    <form onSubmit={handleSubmit((data) => updateTask(data))} aria-hidden='true'
       ref={formRef}
       className={`flex-col p-6 absolute z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
         bg-white dark:bg-dark-gray w-full max-w-[22rem] md:max-w-[30rem] rounded-md pointer-events-auto
@@ -59,9 +69,17 @@ export const TaskModal = ({ showModal, setShowModal }) => {
       </div>
 
       <label htmlFor='description' className='heading-sm mb-2'>Description</label>
-      <textarea name='description' id='description' placeholder="e.g It's always good to take a break. This 15 minute breakwill recharge the batteries a little."
-        className='border-2 rounded border-light-lines dark:bg-dark-gray dark:border-dark-lines w-full text-[13px] placeholder:text-medium-gray font-medium pl-4 pt-2 h-[7rem] mb-6'>
-      </textarea>
+      <div className='relative'>
+        <textarea
+          name='description'
+          id='description'
+          placeholder="e.g It's always good to take a break. This 15 minute breakwill recharge the batteries a little."
+          className='border-2 rounded border-light-lines dark:bg-dark-gray dark:border-dark-lines w-full text-[13px] placeholder:text-medium-gray font-medium pl-4 pt-2 h-[7rem] mb-6'
+          {...register('description', { required: true })}
+        >
+        </textarea>
+        {errors?.description && <div className='absolute text-red bottom-0 right-0 px-4'><span>Description can&apos;t be empty</span></div>}
+      </div>
       <label htmlFor='subtasks' className={'heading-sm mb-2'}>Subtasks</label>
       {
         fields.map((field, index) => (

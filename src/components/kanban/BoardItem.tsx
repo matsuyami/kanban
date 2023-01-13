@@ -1,7 +1,10 @@
+import { useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { TaskModal } from '../modal/TaskModal'
 
-export const BoardItem = ({ index, showModal, setShowModal, task }) => {
+export const BoardItem = ({ index, task }) => {
+  const [showModal, setShowModal] = useState(false)
+
   return (
     <>
       <Draggable draggableId={task.id} index={index}>
@@ -13,7 +16,7 @@ export const BoardItem = ({ index, showModal, setShowModal, task }) => {
           >
             <div className='flex flex-col w-full h-full justify-center pointer pl-4'
               role='button'
-              onClick={() => console.log('clicked task')}
+              onClick={() => setShowModal(true)}
             >
               <h3 className='heading-md text-black dark:text-white'>{task.title}</h3>
               <h4 className='heading-sm mt-2 dark:medium-gray'>0 of {task.subtasks?.length} subtasks</h4>
@@ -21,7 +24,7 @@ export const BoardItem = ({ index, showModal, setShowModal, task }) => {
           </div>
         )}
       </Draggable>
-      {showModal && <TaskModal showModal={showModal} setShowModal={setShowModal} />}
+      {showModal && <TaskModal showModal={showModal} setShowModal={setShowModal} action='edit' currentTask={task} />}
     </>
   )
 }
