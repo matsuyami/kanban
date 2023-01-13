@@ -18,5 +18,5 @@ export type BoardContextType = {
   addColumn: (column: IColumn) => void
   deleteBoard?: (name: string) => void
   addTaskByColumn: (id: string, task: Task) => void
-  editTaskByColumn: (id: string, task: Task) => void
+  editTaskByColumn: (colId: string, prevColId: string, task: Task) => void
 }

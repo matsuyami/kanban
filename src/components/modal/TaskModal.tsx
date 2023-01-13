@@ -8,7 +8,7 @@ import { BoardContext } from '../../context/boardContext'
 import { Task as ITask } from '../../interfaces/Task'
 import { IColumn } from '../../interfaces/Column'
 
-export const TaskModal = ({ showModal, setShowModal, action = 'view', currentTask = {} }) => {
+export const TaskModal = ({ showModal, setShowModal, action = 'view', currentTask = undefined }) => {
   const MAX_NUMBERS_OF_INPUTS = 6
 
   const boardContext = useContext<BoardContextType>(BoardContext)
@@ -40,10 +40,12 @@ export const TaskModal = ({ showModal, setShowModal, action = 'view', currentTas
 
   const updateTask = (data: ITask) => {
     const columnId = currentBoardColumns?.find(col => col.name === data.status)?.colId
+
     if (action === 'view') {
       boardContext.addTaskByColumn(columnId, data)
     } else {
-      boardContext.editTaskByColumn(columnId, data)
+      const prevColumnId = currentBoardColumns?.find(col => col.name === currentTask.status)?.colId
+      boardContext.editTaskByColumn(columnId, prevColumnId, data)
     }
     setShowModal(false)
   }
