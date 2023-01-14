@@ -15,8 +15,9 @@ export type BoardContextType = {
   setCurrentBoard: (board: IBoard) => void
   addBoard: (board: IBoard) => boolean
   editBoard: (board: IBoard, prevTitle: string) => void
+  deleteCurrentBoard?: () => void
   addColumn: (column: IColumn) => void
-  deleteBoard?: (name: string) => void
+  deleteBoard: (name: string) => void
   addTaskByColumn: (id: string, task: Task) => void
   editTaskByColumn: (colId: string, prevColId: string, task: Task) => void
 }

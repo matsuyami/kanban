@@ -38,6 +38,16 @@ export const BoardProvider = ({ children }) => {
     return currentBoard?.columns
   }
 
+  const deleteCurrentBoard = () => {
+    setCurrentBoard(null)
+  }
+
+  const deleteBoard = (title: string) => {
+    const removedBoard = [...boards].filter(board => board.title !== title)
+    deleteCurrentBoard()
+    setBoards(removedBoard)
+  }
+
   const updateColumnOnDrop = (board: IBoard, result: DropResult) => {
     const { source, destination } = result
 
@@ -234,6 +244,7 @@ export const BoardProvider = ({ children }) => {
     addBoard,
     editBoard,
     setCurrentBoard,
+    deleteBoard,
     currentBoard,
     updateColumnOnDrop,
     addColumn,
