@@ -1,4 +1,4 @@
-import { useRef, useContext, useState } from 'react'
+import { useRef, useContext } from 'react'
 import { useForm, useFieldArray } from 'react-hook-form'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
 import { v4 as uuidv4 } from 'uuid';
@@ -16,7 +16,7 @@ export const TaskModal = ({ showModal, setShowModal, action = 'view', currentTas
 
   useOutsideClick(formRef, () => setShowModal())
 
-  const currentBoardColumns = boardContext.currentBoard.columns
+  const currentBoardColumns: Array<IColumn> = boardContext.currentBoard.columns
   const [defaultStatus] = currentBoardColumns
 
   const defaultValues = action === 'view'
@@ -39,12 +39,12 @@ export const TaskModal = ({ showModal, setShowModal, action = 'view', currentTas
   })
 
   const updateTask = (data: ITask) => {
-    const columnId = currentBoardColumns?.find(col => col.name === data.status)?.colId
+    const columnId = currentBoardColumns?.find(col => col?.name === data.status)?.colId
 
     if (action === 'view') {
       boardContext.addTaskByColumn(columnId, data)
     } else {
-      const prevColumnId = currentBoardColumns?.find(col => col.name === currentTask.status)?.colId
+      const prevColumnId = currentBoardColumns?.find(col => col?.name === currentTask.status)?.colId
       boardContext.editTaskByColumn(columnId, prevColumnId, data)
     }
     setShowModal(false)

@@ -10,6 +10,8 @@ import AddIcon from '../../assets/images/icon-add-task-mobile.svg'
 import Logo from '../../assets/images/logo-mobile.svg'
 import Head from 'next/head'
 
+import { DeleteBoardModal } from '../modal/DeleteBoardModal'
+
 import { Board } from '../kanban/Board'
 import { Sidebar } from './Sidebar'
 
@@ -26,7 +28,8 @@ export const Layout = ({ children, title = 'Kanban' }: Props) => {
   const isTabletSize = width >= 768
 
   const boardContext = useContext<BoardContextType>(BoardContext)
-  const [showModal, setShowModal] = useState<boolean>(false)
+  const [showModal, setShowModal] = useState(false)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
 
   const changeBoard = (currBoard: IBoard) => {
     const boards = [...boardContext.boards]
@@ -63,10 +66,17 @@ export const Layout = ({ children, title = 'Kanban' }: Props) => {
                 {!isTabletSize && <AddIcon className='w-3 w-3' />}
                 {isTabletSize && <span className='text-white font-bold'>+ Add New Task </span>}
               </button>
-              <Ellipsis className='scale-[0.8]' />
+              <button
+                disabled={boardContext.currentBoard ? false : true}
+                className={`p-2 ${boardContext.currentBoard ? 'hover:cursor-pointer' : 'hover:cursor-not-allowed'}`}
+                onClick={() => setShowDeleteModal(true)}
+              >
+                <Ellipsis className='scale-[0.8]' />
+              </button>
             </div>
           </div>
         </div>
+        {showDeleteModal && boardContext.currentBoard && <DeleteBoardModal showModal={showDeleteModal} setShowModal={setShowDeleteModal} />}
         {showModal && <TaskModal showModal={showModal} setShowModal={setShowModal} />}
       </header>
       <div className='flex flex-row flex-grow h-[calc(100vh_-_80px)]'>
