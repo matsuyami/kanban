@@ -34,7 +34,7 @@ export const Board = () => {
               <BoardColumn key={index} columnName={arr.name} data={arr.tasks} colId={arr.colId} />
             ))
           }
-          {boardColumns?.length > 0 &&
+          {currentBoard &&
             <button
               className={`flex items-center justify-center h-full min-w-[256px] 
             dark:bg-[linear-gradient(180deg,rgba(43,44,55,.25),rgba(43,44,55,.125))]
