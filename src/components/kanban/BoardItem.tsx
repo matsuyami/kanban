@@ -1,15 +1,17 @@
 import { useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { TaskModal } from '../modal/TaskModal'
+import { DeleteTaskModal } from '../modal/DeleteTaskModal'
 
 export const BoardItem = ({ index, task }) => {
   const [showModal, setShowModal] = useState(false)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
 
   return (
     <>
-      <Draggable draggableId={task.id} index={index}>
+      <Draggable draggableId={task.id} key={task.id} index={index}>
         {provided => (
-          <div className='flex items-center w-64 min-h-[90px] bg-white dark:bg-dark-gray rounded-lg drop-shadow-md'
+          <div className='flex items-center w-64 min-h-[90px] bg-white dark:bg-dark-gray rounded-lg drop-shadow-md pointer-events-auto'
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
@@ -25,6 +27,7 @@ export const BoardItem = ({ index, task }) => {
         )}
       </Draggable>
       {showModal && <TaskModal showModal={showModal} setShowModal={setShowModal} action='edit' currentTask={task} />}
+      {showDeleteModal && <DeleteTaskModal showModal={showDeleteModal} setShowModal={setShowDeleteModal} currentTask={task} />}
     </>
   )
 }
