@@ -69,25 +69,25 @@ export const BoardProvider = ({ children }) => {
       setColumns(cols)
 
     } else {  // different column
+      const sourceColumnIndex = cols.findIndex(col => source.droppableId === col.colId)
+
       const destinationColumn = cols.find(col => destination.droppableId === col.colId)
-      //const destinationTasks = [...destinationColumn.tasks]
+      const destColumnIndex = cols.findIndex(col => destination.droppableId === col.colId)
+      const destinationTasks = [...destinationColumn.tasks]
 
       const sourceTasks = [...sourceColumn.tasks]
       const [removed] = sourceTasks.splice(source.index, 1)
+      removed.status = destinationColumn.name
 
-      /*
       destinationTasks.splice(destination.index, 0, removed)
-      destinationColumn.tasks = destinationTasks
-      sourceColumn.tasks = sourceTasks
-      */
 
-      const currentTask = {
-        ...removed,
-        status: destinationColumn.name
-      }
+      const foundBoardIndex = boards.findIndex(board => board.title === currentBoard.title)
+      const updatedPrevColumns = updateColumnTasks(cols, sourceColumnIndex, sourceTasks)
 
-      setColumns(cols)
-      editTaskByColumn(destinationColumn.colId, sourceColumn.colId, currentTask)
+      // update previous columns tasks
+      updateBoardColumns(foundBoardIndex, updatedPrevColumns)
+      const updatedCurrentColumns = updateColumnTasks(updatedPrevColumns, destColumnIndex, destinationTasks)
+      updateBoardColumns(foundBoardIndex, updatedCurrentColumns)
     }
   }
 
@@ -156,6 +156,19 @@ export const BoardProvider = ({ children }) => {
     setCurrentBoard(current)
   }
 
+  const deleteTaskById = (colId: string, task: Task) => {
+    const boardIndex = boards.findIndex(board => board.title === currentBoard.title)
+    const currentColumns = [...currentBoard.columns]
+
+    const column = currentColumns.find(col => col.colId === colId)
+    const columnIndex = currentColumns.findIndex(col => col.colId === colId)
+
+    const newTasks = column.tasks.filter(t => t.id !== task.id)
+
+    const updatedColumn = updateColumnTasks(currentColumns, columnIndex, newTasks)
+    updateBoardColumns(boardIndex, updatedColumn)
+  }
+
   const editTaskByColumn = (colId: string, prevColId: string, task: Task) => {
     const foundBoardIndex = boards.findIndex(board => board.title === currentBoard.title)
     const currentColumns = [...currentBoard.columns]
@@ -211,7 +224,8 @@ export const BoardProvider = ({ children }) => {
   }
 
   const updateColumnTasks = (columns: Array<IColumn>, columnIndex: number, tasks: Array<Task>) => {
-    return columns.map((col, index) => {
+    const cols = [...columns]
+    return cols.map((col, index) => {
       if (index === columnIndex) {
         return {
           ...col,
@@ -249,6 +263,7 @@ export const BoardProvider = ({ children }) => {
     updateColumnOnDrop,
     addColumn,
     addTaskByColumn,
+    deleteTaskById,
     editTaskByColumn,
     getBoardColumns
   }}>{children}</BoardContext.Provider>
