@@ -34,16 +34,14 @@ export const Board = () => {
               <BoardColumn key={index} columnName={arr.name} data={arr.tasks} colId={arr.colId} />
             ))
           }
-          {boardColumns?.length > 0 &&
-            <button
-              className={`flex items-center justify-center h-full min-w-[256px] 
+          <button
+            className={`flex items-center justify-center h-full min-w-[256px] 
             dark:bg-[linear-gradient(180deg,rgba(43,44,55,.25),rgba(43,44,55,.125))]
             bg-[linear-gradient(180deg,#E9EFFA_0%,_rgba(233,239,250,0.5))] `}
-              onClick={() => setShowModal(true)}
-            >
-              <span className='heading-xl'>+ New Column </span>
-            </button>
-          }
+            onClick={() => setShowModal(true)}
+          >
+            <span className='heading-xl'>+ New Column </span>
+          </button>
         </div>
       }
       {showModal && boardContext.currentBoard &&

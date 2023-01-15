@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Droppable } from 'react-beautiful-dnd'
 import { BoardItem } from './BoardItem'
 
