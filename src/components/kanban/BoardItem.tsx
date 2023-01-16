@@ -1,11 +1,15 @@
 import { useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
+import { SubTask } from '../../interfaces/Task'
+
 import { TaskModal } from '../modal/TaskModal'
+import { SubtaskModal } from '../modal/SubtaskModal'
 import { DeleteTaskModal } from '../modal/DeleteTaskModal'
 
 export const BoardItem = ({ index, task }) => {
   const [showModal, setShowModal] = useState(false)
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [showTaskModal, setShowTaskModal] = useState(false)
+  const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(false)
 
   return (
     <>
@@ -20,14 +24,25 @@ export const BoardItem = ({ index, task }) => {
               role='button'
               onClick={() => setShowModal(true)}
             >
-              <h3 className='heading-md text-black dark:text-white'>{task.title}</h3>
-              <h4 className='heading-sm mt-2 dark:medium-gray'>0 of {task.subtasks?.length} subtasks</h4>
+              <h3 className='heading-md text-black dark:text-white break-words whitespace-pre-line'>{task.title}</h3>
+              <h4 className='heading-sm py-2 dark:medium-gray'>
+                {task.subtasks.filter((subtask: SubTask) => subtask.isCompleted).length}
+                of {task.subtasks?.length} subtasks</h4>
             </div>
           </div>
         )}
       </Draggable>
-      {showModal && <TaskModal showModal={showModal} setShowModal={setShowModal} action='edit' currentTask={task} />}
-      {showDeleteModal && <DeleteTaskModal showModal={showDeleteModal} setShowModal={setShowDeleteModal} currentTask={task} />}
+      {showModal &&
+        <SubtaskModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          showTaskModal={showTaskModal}
+          setShowTaskModal={setShowTaskModal}
+          showDeleteTaskModal={showDeleteTaskModal}
+          setShowDeleteTaskModal={setShowDeleteTaskModal}
+          currentTask={task} />}
+      {showTaskModal && <TaskModal showModal={showTaskModal} setShowModal={setShowTaskModal} currentTask={task} action='edit' />}
+      {showDeleteTaskModal && <DeleteTaskModal showModal={showDeleteTaskModal} setShowModal={setShowDeleteTaskModal} currentTask={task} />}
     </>
   )
 }

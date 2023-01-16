@@ -8,6 +8,7 @@ export interface Task {
 }
 
 export interface SubTask {
-  subtask: string,
+  title: string,
+  isCompleted: boolean,
 }
 
