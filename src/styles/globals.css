@@ -47,4 +47,12 @@
   .heading-xl {
     @apply text-heading-xl font-bold;
   }
+
+  .body-lg{
+    @apply text-body-lg font-medium;
+  }
+
+  .body-md{
+    @apply text-body-md font-bold;
+  }
 }

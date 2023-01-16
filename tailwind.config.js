@@ -26,6 +26,8 @@ module.exports = {
       "heading-md": ["15px", "19px"],
       "heading-lg": ["18px", "23px"],
       "heading-xl": ["24px", "30px"],
+      "body-lg": ["13px", "23px"],
+      "body-md": ["12px", "15px"]
     },
   },
   plugins: [],

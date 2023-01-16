@@ -24,7 +24,7 @@ export const TaskModal = ({ showModal, setShowModal, action = 'view', currentTas
       status: defaultStatus.name || '',
       title: '',
       description: '',
-      subtasks: [{ subtask: '' }],
+      subtasks: [{ title: '', isCompleted: false }],
       id: uuidv4(),
     }
     : { ...currentTask }
@@ -86,7 +86,7 @@ export const TaskModal = ({ showModal, setShowModal, action = 'view', currentTas
           <div className='relative' key={field.id}>
             <input type='text'
               placeholder='e.g. Done'
-              {...register(`subtasks.${index}.subtask`, { required: true })}
+              {...register(`subtasks.${index}.title`, { required: true })}
               className='relative border-2 rounded border-light-lines dark:bg-dark-gray dark:border-dark-lines w-full placeholder:text-medium-gray text-[13px] font-medium pl-4 mb-4 heading-md h-[2.5rem]'
             />
 
@@ -97,7 +97,8 @@ export const TaskModal = ({ showModal, setShowModal, action = 'view', currentTas
       <button
         type='button'
         onClick={() => append({
-          subtask: '',
+          title: '',
+          isCompleted: false,
         })}
         className={`flex flex-row items-center justify-center pointer mb-6 w-full h-[2.5rem] bg-main-purple/10 hover:bg-main-purple/30 placeholder:text-medium-gray dark:bg-white dark:text-main-purple
           ${fields.length >= MAX_NUMBERS_OF_INPUTS ? 'hover:cursor-not-allowed' : ''} rounded-[1.25rem]`}
