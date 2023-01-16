@@ -163,7 +163,7 @@ export const BoardProvider = ({ children }) => {
     const column = currentColumns.find(col => col.colId === colId)
     const columnIndex = currentColumns.findIndex(col => col.colId === colId)
 
-    const newTasks = column.tasks.filter(t => t.id !== task.id)
+    const newTasks = column?.tasks?.filter(t => t?.id !== task.id)
 
     const updatedColumn = updateColumnTasks(currentColumns, columnIndex, newTasks)
     updateBoardColumns(boardIndex, updatedColumn)
