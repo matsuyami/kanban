@@ -26,7 +26,7 @@ export const DeleteTaskModal = ({ showModal, setShowModal, currentTask }) => {
         ${showModal ? 'flex' : 'hidden'}`}
     >
       <div className=
-        {`{ showModal ? 'block' : 'hidden' } space-y-6`}>
+        {'{ showModal ? \'block\' : \'hidden\' } space-y-6'}>
         <div className='text-red'>
           <span>Delete this board?</span>
         </div>
